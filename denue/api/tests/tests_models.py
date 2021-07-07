@@ -3,18 +3,16 @@ from django.test import TestCase
 
 from api.models import ComercialActivity, Stratum, ShopType, Shop
 from fixtures.utilities import * 
-from .functions_test import *
+from api.functions_test import *
 
 
 # Create your tests here.
 class ComercialActivityTestCase(TestCase):
 
     def setUp(self):
-
-        self.comercial_activity = create_comercial_activity()
+        self.comercial_activity = next(create_comercial_activity())
 
     def test_commercial_activity_get_by_name(self):
-
         comercial_activity = ComercialActivity.objects.get(
             name=self.comercial_activity.name
             )
@@ -24,11 +22,9 @@ class ComercialActivityTestCase(TestCase):
 class StratumTestCase(TestCase):
 
     def setUp(self):
-
-        self.stratum = create_stratum()
+        self.stratum = next(create_stratum())
 
     def test_commercial_activity_get_by_name(self):
-
         stratum = Stratum.objects.get(name=self.stratum.name)
         self.assertEqual(stratum.name, self.stratum.name)
 
@@ -36,8 +32,7 @@ class StratumTestCase(TestCase):
 class ShopTypeTestCase(TestCase):
 
     def setUp(self):
-
-        self.shop_type = create_shop_type()
+        self.shop_type = next(create_shop_type())
 
     def test_commercial_activity_get_by_name(self):
 
@@ -48,7 +43,7 @@ class ShopTypeTestCase(TestCase):
 class ShopTestCase(TestCase):
 
     def setUp(self):
-        self.shop = create_shop()
+        self.shop = next(create_shop())
 
     def test_shop_get_by_name(self):
         shop = Shop.objects.get(name=self.shop.name)
