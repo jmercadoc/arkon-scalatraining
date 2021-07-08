@@ -55,4 +55,4 @@ class Query(graphene.ObjectType):
                                     )
 
     shop = relay.Node.Field(ShopNode)
-    all_shops = DjangoFilterConnectionField(ShopNode)
+    shops = DjangoFilterConnectionField(ShopNode)
