@@ -3,7 +3,7 @@ from django.test import TestCase
 
 from api.models import ComercialActivity, Stratum, ShopType, Shop
 from fixtures.utilities import * 
-from api.functions_test import *
+from api.tests.functions import *
 
 
 # Create your tests here.

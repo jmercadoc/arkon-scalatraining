@@ -5,14 +5,14 @@ from denue.schema import schema
 from api.tests.functions import *
 
 
-class ComercialActivityTestCase(GraphQLTestCase):
+class ShopTypeTestCase(GraphQLTestCase):
 
     def setUp(self):
         self.client = Client(schema)
-        self.comercial_activities = list(create_comercial_activity(items_len=3))
+        self.stratums = list(create_stratum(items_len=3))
 
     def test_comercial_activity_query(self):
-        name = 'allComercialActivities'
+        name = 'allStratums'
         body = """
             edges{
                 node{
@@ -23,6 +23,6 @@ class ComercialActivityTestCase(GraphQLTestCase):
         query = build_graphql_query(name, body)
 
         executed = self.client.execute(query)
-        expected = build_response_expected(self.comercial_activities, name)
+        expected = build_response_expected(self.stratums, name)
 
         self.assertEqual(executed['data'], expected)

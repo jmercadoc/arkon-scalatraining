@@ -50,3 +50,34 @@ def create_shop(items_len=1):
             )
 
         yield shop
+
+
+def build_graphql_query(query_name, query_select):
+    query = """
+        query{{
+        {query_name}{{
+            {query_select}
+        }}
+    }}
+    """.format(query_name=query_name, query_select=query_select)
+
+    return query
+
+
+def build_response_expected(items, name):
+
+    def activity(ca):
+        return {
+            'node': {
+                    'name': ca.name
+            }
+        }
+
+    comercial_activity = map(activity, items)
+    expected = {
+        name: {
+            'edges': list(comercial_activity)
+            }
+        }
+
+    return expected
