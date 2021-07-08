@@ -11,7 +11,7 @@ class ShopTypeTestCase(GraphQLTestCase):
         self.client = Client(schema)
         self.shop_types = list(create_shop_type(items_len=3))
 
-    def test_comercial_activity_query(self):
+    def test_shop_type_query(self):
         name = 'allShopType'
         body = """
             edges{

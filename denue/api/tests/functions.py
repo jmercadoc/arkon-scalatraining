@@ -64,6 +64,22 @@ def build_graphql_query(query_name, query_select):
     return query
 
 
+def build_graphql_query_with_parameters(name, select, parameters, variables):
+    query = """
+        query {name}({parameters}){{
+        {name}({variables}){{
+            {select}
+        }} 
+    }}
+    """.format(
+        name=name,
+        select=select,
+        parameters=parameters,
+        variables=variables)
+
+    return query
+
+
 def build_response_expected(items, name):
 
     def activity(ca):
@@ -77,6 +93,17 @@ def build_response_expected(items, name):
     expected = {
         name: {
             'edges': list(comercial_activity)
+            }
+        }
+
+    return expected
+
+
+def build_shop_response_expected(item, name):
+
+    expected = {
+        name: {
+            'name': item.name            
             }
         }
 
