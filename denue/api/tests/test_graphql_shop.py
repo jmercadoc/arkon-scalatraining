@@ -9,10 +9,10 @@ class ShopTestCase(GraphQLTestCase):
 
     def setUp(self):
         self.client = Client(schema)
-        self.stratums = list(create_stratum(items_len=3))
+        self.stratums = list(create_shop(items_len=10))
 
     def test_comercial_activity_query(self):
-        name = 'allStratums'
+        name = 'shops'
         body = """
             edges{
                 node{
