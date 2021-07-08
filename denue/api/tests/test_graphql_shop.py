@@ -11,7 +11,7 @@ class ShopTestCase(GraphQLTestCase):
         self.client = Client(schema)
         self.stratums = list(create_shop(items_len=10))
 
-    def test_comercial_activity_query(self):
+    def test_shop_query(self):
         name = 'shops'
         body = """
             edges{
