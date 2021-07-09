@@ -15,6 +15,10 @@ def generate_int(min_length=0, max_length=50):
     return random.randint(min_length, max_length)
 
 
+def generate_float(min_length=0, max_length=50):
+    return random.uniform(min_length, max_length)
+
+
 def authenticate_test(client, username='test'):
     user = get_user_model().objects.create(username=username)
     client.authenticate(user)

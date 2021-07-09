@@ -80,6 +80,21 @@ def build_graphql_query_with_parameters(name, select, parameters, variables):
     return query
 
 
+def build_graphql_mutation(name, select, input):
+    query = """
+        mutation {name} {{
+        {name}({input}){{
+            {select}
+        }} 
+    }}
+    """.format(
+        name=name,
+        select=select,
+        input=input)
+
+    return query    
+
+
 def build_response_expected(items, name):
 
     def activity(ca):
@@ -106,5 +121,21 @@ def build_shop_response_expected(item, name):
             'name': item.name            
             }
         }
+
+    return expected
+
+
+def build_mutation_response_expected(item, name):
+
+    expected = {
+        name: {
+            'shop': {
+                'name': item["name"],
+                'businessName': item["business_name"],
+                'activity': {'name': item["activity"].lower()},
+                'stratum': {'name': item["stratum"].lower()}
+            }
+        }
+    }
 
     return expected

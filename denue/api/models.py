@@ -30,9 +30,9 @@ class Shop(models.Model):
         on_delete=models.CASCADE,
         related_name='shops')
     address = models.CharField(max_length=250)
-    phone_number = PhoneNumberField(blank=True)
-    email = models.EmailField(blank=True)
-    website = models.URLField(blank=True)
+    phone_number = PhoneNumberField(blank=True, null=True)
+    email = models.EmailField(blank=True, null=True)
+    website = models.URLField(blank=True, null=True)
     shop_type = models.ForeignKey(
         ShopType,
         on_delete=models.CASCADE,
