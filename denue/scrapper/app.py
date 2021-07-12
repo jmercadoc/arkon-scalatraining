@@ -10,7 +10,7 @@ def main(
         condition='todos',
         federal_entity='01',
         initial_registration=1,
-        final_registration=100
+        final_registration=10
         ):
 
     config = dotenv_values("../../.env")
@@ -18,7 +18,7 @@ def main(
 
     scrapper = Scrapper(token=RENUE_API_KEY)
 
-    url = scrapper.build_denue_query(
+    data = scrapper.get_data_denue(
             service=service,
             method=method,
             condition=condition,
@@ -27,9 +27,8 @@ def main(
             final_registration=final_registration,
             token=RENUE_API_KEY)
 
-    print(url)
+    print(data)
 
-    # TODO Retrieve data from DENUE
     # TODO Retrieve execute create shop
 
 
