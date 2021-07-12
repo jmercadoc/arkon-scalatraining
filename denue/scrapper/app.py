@@ -2,6 +2,7 @@ import sys
 from dotenv import dotenv_values
 
 from scrapper import Scrapper
+from service import Service
 
 
 def main(
@@ -10,15 +11,15 @@ def main(
         condition='todos',
         federal_entity='01',
         initial_registration=1,
-        final_registration=10
+        final_registration=5
         ):
 
     config = dotenv_values("../../.env")
     RENUE_API_KEY = config['RENUE_API_KEY']
-
+    GRAPHQL_API = config['GRAPHQL_API']
     scrapper = Scrapper(token=RENUE_API_KEY)
 
-    data = scrapper.get_data_denue(
+    shops = scrapper.get_data_denue(
             service=service,
             method=method,
             condition=condition,
@@ -27,9 +28,8 @@ def main(
             final_registration=final_registration,
             token=RENUE_API_KEY)
 
-    print(data)
-
-    # TODO Retrieve execute create shop
+    service = Service()
+    service.insert_shops(shops=shops, api=GRAPHQL_API)
 
 
 if __name__ == "__main__":

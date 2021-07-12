@@ -53,8 +53,5 @@ class Scrapper():
         if response.status_code == 200:
             return json.loads(response.text)
         else:
-            print('error> {}'.format(str(response.status_code)))
+            print('error: {}'.format(str(response.status_code)))
             return None
-
-    def execute_mutation(self):
-        pass
