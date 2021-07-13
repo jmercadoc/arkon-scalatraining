@@ -47,8 +47,12 @@ query them based on their location.
 ```
  docker-compose up -d
 
- docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py migrate
+ // docker-compose
+ docker-compose exec denue-api python denue/manage.py migrate 
+ docker-compose exec denue-api python denue/manage.py test api.tests.tests_model_comercial_activity
 
+ // docker
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py migrate
  docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py test api.tests.tests_model_comercial_activity
 ```
 
