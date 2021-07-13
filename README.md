@@ -46,14 +46,20 @@ query them based on their location.
 ## Basic commands (Docker)
 
 ```
+// create network
+docker network create denue-net
+
 // runing database
-docker run -d --name denue-db -p 5432:5432 --env-file .env  postgis/postgis
+docker run -d --name denue-db -p 5432:5432 --env-file .env --net denue-net postgis/postgis
 
 // build develop image 
 docker build -t denue-dev .
 
-// running container 
-docker run -it -d --name denue-app --rm --volume $(pwd):/app denue-dev:latest bash
+// running container (Linux)
+docker run -it -d --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest
+
+// running container (Windows PS)
+docker run -it -d --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest
 
 // python makemigrations
 docker exec -it denue-app python denue/manage.py makemigrations api
@@ -76,8 +82,11 @@ docker exec -it denue-app python denue/manage.py test api.tests.tests_model_come
 
 // on bash...
 
-// running container (bash)
-docker run -it --name denue-app --rm --volume $(pwd):/app denue-dev:latest bash
+// running container (bash Linux)
+docker run -it --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest bash
+
+// running container (bash Windows PS)
+docker run -it --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest bash
 
 // python makemigrations
 python denue/manage.py makemigrations api
