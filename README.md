@@ -52,11 +52,20 @@ docker run -d --name denue-db -p 5432:5432 --env-file .env  postgis/postgis
 // build develop image 
 docker build -t denue-dev .
 
+// running container 
+ docker run -it -d --name denue-app --rm --volume ${pwd}:/app denue-dev:latest bash
+
 // python makemigrations
 docker exec -it denue-app python denue/manage.py makemigrations api
 
+// python all makemigrations
+docker exec -it denue-app python denue/manage.py makemigrations
+
 // python database migrate 
 docker exec -it denue-app python denue/manage.py migrate api
+
+// apply all migrates
+docker exec -it denue-app python denue/manage.py migrate
 
 // runing server Django
 docker exec -it denue-app python denue/manage.py runserver
