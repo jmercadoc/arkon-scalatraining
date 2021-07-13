@@ -43,6 +43,15 @@ query them based on their location.
 
 ## Exercises
 
+## How to execute services and tests with docker-compose and docker
+```
+ docker-compose up -d
+
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py migrate
+
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py test api.tests.tests_model_comercial_activity
+```
+
 ## Basic commands (Docker)
 
 ```
