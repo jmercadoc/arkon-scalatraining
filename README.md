@@ -68,7 +68,7 @@ $ python manage.py migrate api
 $ python -m venv env
 
 // Activate Virtual Environment
-$ source mypython/bin/activate
+$ source env/bin/activate
 
 // Deactivate the virtual environment
 $ deactivate
