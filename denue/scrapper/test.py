@@ -7,7 +7,7 @@ from dotenv import dotenv_values
 from scrapper import Scrapper
 from service import Service
 
-sys.path.append(os.getcwd()[:-8] + 'fixtures')
+sys.path.append(os.getcwd()[:-8] + '/app/denue/fixtures')
 import utilities
 
 
@@ -21,7 +21,7 @@ class TestScrapper(unittest.TestCase):
         initial_registration = 1
         final_registration = 5
 
-        config = dotenv_values("../../.env")
+        config = dotenv_values(".env")
         RENUE_API_KEY = config['RENUE_API_KEY']
 
         scrapper = Scrapper(token=RENUE_API_KEY)
@@ -62,7 +62,7 @@ class TestScrapper(unittest.TestCase):
                 'numero_local': ''
                 }
 
-        config = dotenv_values("../../.env")        
+        config = dotenv_values(".env")        
         GRAPHQL_API = config['GRAPHQL_API']
 
         service = Service()
