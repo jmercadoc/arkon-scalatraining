@@ -46,41 +46,97 @@ query them based on their location.
 
 ## Exercises
 
-
-## Basic commands
-Django Shell
+## How to execute services and tests with docker-compose and docker
 ```
-$ python manage.py shell
+ docker-compose build
+ 
+ docker-compose up -d
+
+ // docker-compose
+ docker-compose exec denue-api python denue/manage.py migrate 
+ docker-compose exec denue-api python denue/manage.py test api.tests.tests_model_comercial_activity
+
+ // docker
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py migrate
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py test api.tests.tests_model_comercial_activity
 ```
 
-Running test
+## Basic commands (Docker)
+
 ```
-// running all tests
-$ python manage.py test
+// create network
+docker network create denue-net
 
-// running api test
-$ python manage.py test api.test
+// runing database
+docker run -d --name denue-db -p 5432:5432 --env-file .env --net denue-net postgis/postgis
 
-// Creates new migration(s) for api app
-$ python manage.py makemigrations api
+// build develop image 
+docker build -t denue-dev .
 
-// Updates database schema
-$ python manage.py migrate api
+// running container (Linux)
+docker run -it -d --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest
 
-// Create virtual environment
-$ python -m venv env
+// running container (Windows PS)
+docker run -it -d --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest
 
-// Activate Virtual Environment
-$ source mypython/bin/activate
+// python makemigrations
+docker exec -it denue-app python denue/manage.py makemigrations api
 
-// Deactivate the virtual environment
-$ deactivate
+// python all makemigrations
+docker exec -it denue-app python denue/manage.py makemigrations
 
-// Install requiretements 
-$ pip install -r requirements.txt
+// python database migrate 
+docker exec -it denue-app python denue/manage.py migrate api
+
+// apply all migrates
+docker exec -it denue-app python denue/manage.py migrate
+
+// runing server Django
+docker exec -it denue-app python denue/manage.py runserver
+
+// runing test
+docker exec -it denue-app python denue/manage.py test api.tests.tests_model_comercial_activity
 
 
+// on bash...
 
+// running container (bash Linux)
+docker run -it --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest bash
+
+// running container (bash Windows PS)
+docker run -it --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest bash
+
+// python makemigrations
+python denue/manage.py makemigrations api
+
+// python database migrate 
+python denue/manage.py migrate api
+
+// runing server Django
+python denue/manage.py runserver
+
+// runing test
+python denue/manage.py test api.tests.tests_model_comercial_activity
+
+```
+
+## Enviroment File
+if the .env file is created in the app directory denue the python commands should be removed denue/
+example:
+```
+python manage.py test api.tests.tests_model_comercial_activity
+```
+.env example
+```
+SECRET_KEY=your-secret-key
+RENUE_API_KEY=your-denue-api=key
+POSTGRES_ENGINE=django.contrib.gis.db.backends.postgis
+POSTGRES_HOST=localhost
+POSTGRES_NAME=postgres
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=your-db-password
+POSTGRES_PORT=5432
+DJANGO_DEBUG=True
 ```
 
 ## Requirements 
