@@ -13,7 +13,7 @@ def main(
         final_registration=100
         ):
 
-    config = dotenv_values("../../.env")
+    config = dotenv_values(".env")
     RENUE_API_KEY = config['RENUE_API_KEY']
 
     scrapper = Scrapper(token=RENUE_API_KEY)
