@@ -14,7 +14,7 @@ def main(
         final_registration=5
         ):
 
-    config = dotenv_values("../../.env")
+    config = dotenv_values(".env")
     RENUE_API_KEY = config['RENUE_API_KEY']
     GRAPHQL_API = config['GRAPHQL_API']
     scrapper = Scrapper(token=RENUE_API_KEY)
