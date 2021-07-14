@@ -48,6 +48,8 @@ query them based on their location.
 
 ## How to execute services and tests with docker-compose and docker
 ```
+ docker-compose build
+ 
  docker-compose up -d
 
  // docker-compose
