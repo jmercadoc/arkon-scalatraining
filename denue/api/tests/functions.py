@@ -32,7 +32,9 @@ def create_shop(items_len=1):
         address = generate_string(20, 150)
         email = 'user1@test.com'
         website = 'www.test.com'
-        position = Point(5, 23)
+        latitude = generate_float(-90, 90)
+        longitude = generate_float(-180, 180)
+        position = Point(x=longitude, y=latitude)
 
         activity = next(create_comercial_activity())
         stratum = next(create_stratum())

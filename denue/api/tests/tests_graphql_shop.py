@@ -14,7 +14,7 @@ class ShopTestCase(GraphQLTestCase):
         self.client = Client(schema)
         self.shops = list(create_shop(items_len=10))
 
-    def test_shop_query(self):
+    def test_shops_query(self):
         name = 'shops'
         body = """
             edges{
@@ -51,4 +51,37 @@ class ShopTestCase(GraphQLTestCase):
         executed = self.client.execute(query, variables=variables)
         expected = build_shop_response_expected(item, name)
 
+        self.assertEqual(executed["data"], expected)
+
+    def test_shops_query_get_by_position(self):
+        name = 'shops'
+        parameters = "$position: Geometry!"
+        variables_str = "position: $position"
+        body = """
+        edges {
+            node {
+                name
+            }
+        }
+        """
+        item = self.shops[0]
+
+        variables = {
+            "position": {
+                "type": "Point",
+                "coordinates": [
+                    item.position.x,
+                    item.position.y
+                ]
+            }
+        }
+
+        query = build_graphql_query_with_parameters(
+                name,
+                body,
+                parameters=parameters,
+                variables=variables_str
+            )
+        executed = self.client.execute(query, variables=variables)
+        expected = build_response_expected([item], name)
         self.assertEqual(executed["data"], expected)
