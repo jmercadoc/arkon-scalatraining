@@ -2,14 +2,17 @@
     <img src="./img/logo.jpg" align="right" height="80">
 </a>
 
-# Arkon's Scala Training
+# Arkon's Python Training
 
 ## Description
-Scala hands on training project. Looking to introduce new team members or anyone interested to the scala 
+Python hands on training project. Looking to introduce new team members or anyone interested to the python 
 programming language and the way it's used within the ArkonData team. 
 
 You'll implement a web server exposing a GraphQL API to expose business retrieved from the INEGI's API and 
 query them based on their location.
+
+# https://docs.djangoproject.com/en/3.2/ref/contrib/gis/install/geolibs/#gdalbuild
+# https://docs.djangoproject.com/en/3.2/ref/contrib/gis/model-api/
 
 * [Concepts](https://github.com/Grupo-Abraxas/arkon-scalatraining#concepts)
 * [Tools](https://github.com/Grupo-Abraxas/arkon-scalatraining#tools)
@@ -20,78 +23,126 @@ query them based on their location.
 
 ## Concepts
 - FP
-    - [Why functional programming?](http://book.realworldhaskell.org/read/why-functional-programming-why-haskell.html)
-- Referential transparency.
-- Immutability.
-- Recursion (FP).
-- Basic concurrency using [Scala's Future](https://docs.scala-lang.org/overviews/core/futures.html). 
-- Functor/Mondad (FP through [cats](https://typelevel.org/cats/)).
-- The real world/side effects using the [IO Monad](http://book.realworldhaskell.org/read/io.html).
-- Testing
-- [Types and type clases](http://learnyouahaskell.com/types-and-typeclasses)
-- [Implicits](https://docs.scala-lang.org/tour/implicit-parameters.html)
-- [hlists](https://www.scala-exercises.org/shapeless/heterogenous_lists)
+    - [Functional Programming HOWTO](https://docs.python.org/es/3/howto/functional.html#functional-programming-howto)
 
 ## Books
-- [https://underscore.io/books](https://underscore.io/books/)
+- Coming soon
 
 ## Videos
-- [Let’s Code Real World App Using Purely Functional Techniques (in Scala)](https://youtu.be/m40YOZr1nxQ)
+- Coming soon
 
 ## Tools
-- [Scala](https://www.scala-lang.org/2020/06/29/one-click-install.html)
-- [IntelliJ (IDE)](https://www.jetbrains.com/idea/download/)
-- [sbt](https://www.scala-sbt.org/)
+- [Python]https://www.python.org/)
+- [Code](https://code.visualstudio.com/)
 
 ## Libraries
-- [cats](https://typelevel.org/cats/): Library for FP.
-- [cats-effect](https://typelevel.org/cats-effect/): IO Monad in Scala.
-- [FS2](https://fs2.io/index.html): Functional streams.
-- [Doobie](https://tpolecat.github.io/doobie/): Functional layer for JDBC.
-- [Sangria](https://sangria-graphql.github.io/): Scala library for GraphQL.
-- [ScalaTest](https://www.scalatest.org/): Scala testing library.
-- [ScalaCheck](https://www.scalacheck.org/): Library for random testing of program properties inspired by [QuickCheck](https://hackage.haskell.org/package/QuickCheck).
-- [http4s](https://http4s.org/): Library fot HTTP
+- [Django](https://docs.djangoproject.com).
+- [Geospatial libraries](https://docs.djangoproject.com/en/3.2/ref/contrib/gis/install/geolibs/)
+- [GeoDjango Model API](https://docs.djangoproject.com/en/3.2/ref/contrib/gis/model-api/)
+- [Graphene-Django](https://docs.graphene-python.org/projects/django/en/latest/)
+    - [GeoDjango](https://github.com/EverWinter23/graphene-gis)
+    - [Testing API](https://docs.graphene-python.org/projects/django/en/latest/testing/)
+- [Testing in Django](https://docs.djangoproject.com/en/3.2/topics/testing/): Python testing library.
 
 ## Exercises
-- [Std lib](https://www.scala-exercises.org/std_lib/asserts)
-- [Fp in Scala](https://www.scala-exercises.org/fp_in_scala/getting_started_with_functional_programming)
-- [Cats](https://www.scala-exercises.org/cats/semigroup)
-- [Circe](https://www.scala-exercises.org/circe/Json)
-- [Doobie](https://www.scala-exercises.org/doobie/connecting_to_database)
-- [ScalaCheck](https://www.scala-exercises.org/scalacheck/properties)
 
-## Basic commands
-SBT console
+## How to execute services and tests with docker-compose and docker
 ```
-$ sbt
+ docker-compose build
+ 
+ docker-compose up -d
+
+ // docker-compose
+ docker-compose exec denue-api python denue/manage.py migrate 
+ docker-compose exec denue-api python denue/manage.py test api.tests.tests_model_comercial_activity
+
+ // docker
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py migrate
+ docker exec -it arkon-scalatraining_denue-api_1 python denue/manage.py test api.tests.tests_model_comercial_activity
 ```
 
-Running sbt commands inside the SBT console
+## Basic commands (Docker)
+
 ```
-// sbt console
-$ sbt
+// create network
+docker network create denue-net
 
-// Scala REPL
-$ sbt console
+// runing database
+docker run -d --name denue-db -p 5432:5432 --env-file .env --net denue-net postgis/postgis
 
-// Compile the main module
-sbt:arkon-scalatraining> compile
+// build develop image 
+docker build -t denue-dev .
 
-// Compile the test module
-sbt:arkon-scalatraining> test:compile
+// running container (Linux)
+docker run -it -d --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest
 
-// Run all tests
-sbt:arkon-scalatraining> test
+// running container (Windows PS)
+docker run -it -d --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest
 
-// Run a specific test
-sbt:arkon-scalatraining> testOnly training.std.OptionSpec
+// python makemigrations
+docker exec -it denue-app python denue/manage.py makemigrations api
+
+// python all makemigrations
+docker exec -it denue-app python denue/manage.py makemigrations
+
+// python database migrate 
+docker exec -it denue-app python denue/manage.py migrate api
+
+// apply all migrates
+docker exec -it denue-app python denue/manage.py migrate
+
+// runing server Django
+docker exec -it denue-app python denue/manage.py runserver
+
+// runing test
+docker exec -it denue-app python denue/manage.py test api.tests.tests_model_comercial_activity
+
+
+// on bash...
+
+// running container (bash Linux)
+docker run -it --name denue-app --rm --volume $(pwd):/app --net denue-net denue-dev:latest bash
+
+// running container (bash Windows PS)
+docker run -it --name denue-app --rm --volume ${pwd}:/app --net denue-net denue-dev:latest bash
+
+// python makemigrations
+python denue/manage.py makemigrations api
+
+// python database migrate 
+python denue/manage.py migrate api
+
+// runing server Django
+python denue/manage.py runserver
+
+// runing test
+python denue/manage.py test api.tests.tests_model_comercial_activity
+
+```
+
+## Enviroment File
+if the .env file is created in the app directory denue the python commands should be removed denue/
+example:
+```
+python manage.py test api.tests.tests_model_comercial_activity
+```
+.env example
+```
+SECRET_KEY=your-secret-key
+RENUE_API_KEY=your-denue-api=key
+POSTGRES_ENGINE=django.contrib.gis.db.backends.postgis
+POSTGRES_HOST=localhost
+POSTGRES_NAME=postgres
+POSTGRES_USERNAME=postgres
+POSTGRES_PASSWORD=your-db-password
+POSTGRES_PORT=5432
+DJANGO_DEBUG=True
 ```
 
 ## Requirements 
 Implement a GraphQL API based on the given [schema](./schema.graphql) to expose the saved business and 
 query them based on their location. The database to be used should be [PostgreSQL](www.postgresql.org) with the 
-[PostGIS](http://postgis.net/) exitension to power the georeferenced queries. To fill the database you'll have 
+[PostGIS](http://postgis.net/) extension to power the georeferenced queries. To fill the database you'll have 
 to implement a web scrapper to retrieve data from the INEGI's DENUE [API](https://www.inegi.org.mx/servicios/api_denue.html) 
 and execute the `createShop` mutation defined on the implemented API.
 
