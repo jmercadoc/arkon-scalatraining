@@ -45,19 +45,24 @@ class ShopFilter(GeometryFilterSet):
         }
 
 
-class ShopNode(DjangoObjectType):
-    class Meta:
-        model = Shop
-        filterset_class = ShopFilter
-        interfaces = (relay.Node, )
-
-
 class NearbyShopsNode(graphql_geojson.GeoJSONType):
     class Meta:
         model = Shop
         interfaces = [relay.Node]
         filterset_class = ShopFilter
         geojson_field = 'position'
+
+
+class ShopNode(DjangoObjectType):
+    nearby_shops = DjangoFilterConnectionField(
+        NearbyShopsNode,
+        max_limit=5
+        )
+
+    class Meta:
+        model = Shop
+        filterset_class = ShopFilter
+        interfaces = (relay.Node, )
 
 
 class Query(graphene.ObjectType):

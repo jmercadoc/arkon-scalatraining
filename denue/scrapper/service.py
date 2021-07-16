@@ -1,5 +1,8 @@
 import requests
 
+from pymonad.tools import curry
+from pymonad.promise import Promise
+
 
 class Service():
 
@@ -84,8 +87,8 @@ class Service():
             long=shop["Longitud"]
             )
 
-    def execute_mutation(self, api, shop):
-
+    @curry(3)
+    async def execute_mutation(self, api, shop):
         name = 'createShop'
         select = """
             shop{
@@ -107,14 +110,15 @@ class Service():
             variables=None,
             url=api)
 
-    def insert_shops(self, shops, api):
+    @curry(3)
+    async def insert_shops(self, api, shops):
+        execute = self.execute_mutation(api)
+        for _, shop in enumerate(shops):
 
-        print('total shops:', len(shops))
+            await Promise.insert(shop).then(execute).then(success).catch(lambda error: error)
 
-        for index, shop in enumerate(shops):
-            response = self.execute_mutation(api=api, shop=shop)
 
-            print('shop {}, name: {} inserted'.format(
-                        str(index),
-                        response['data']['createShop']['shop']['name']
-                    ))
+async def success(response):    
+    print('shop {} inserted'.format(
+        response['data']['createShop']['shop']['name']
+    ))

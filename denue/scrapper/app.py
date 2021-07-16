@@ -1,4 +1,6 @@
 import sys
+import asyncio
+
 from dotenv import dotenv_values
 
 from scrapper import Scrapper
@@ -11,25 +13,29 @@ def main(
         condition='todos',
         federal_entity='01',
         initial_registration=1,
-        final_registration=5
+        final_registration=10
         ):
 
     config = dotenv_values(".env")
     RENUE_API_KEY = config['RENUE_API_KEY']
     GRAPHQL_API = config['GRAPHQL_API']
-    scrapper = Scrapper(token=RENUE_API_KEY)
+    scrapper = Scrapper(
+        token=RENUE_API_KEY,
+        service=service
+        )
 
     shops = scrapper.get_data_denue(
-            service=service,
             method=method,
             condition=condition,
             federal_entity=federal_entity,
             initial_registration=initial_registration,
-            final_registration=final_registration,
-            token=RENUE_API_KEY)
+            final_registration=final_registration
+            )
 
     service = Service()
-    service.insert_shops(shops=shops, api=GRAPHQL_API)
+    insert = service.insert_shops(GRAPHQL_API)
+
+    asyncio.run(insert(shops))
 
 
 if __name__ == "__main__":
