@@ -110,15 +110,9 @@ class Service():
             variables=None,
             url=api)
 
-    @curry(3)
-    async def insert_shops(self, api, shops):
+    @curry(5)
+    async def insert_shops(self, api, success, error, shops):
         execute = self.execute_mutation(api)
         for _, shop in enumerate(shops):
 
-            await Promise.insert(shop).then(execute).then(success).catch(lambda error: error)
-
-
-async def success(response):    
-    print('shop {} inserted'.format(
-        response['data']['createShop']['shop']['name']
-    ))
+            await Promise.insert(shop).then(execute).then(success).catch(error)

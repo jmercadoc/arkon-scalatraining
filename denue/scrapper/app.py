@@ -7,6 +7,16 @@ from scrapper import Scrapper
 from service import Service
 
 
+def success(response):
+    print('shop {} inserted'.format(
+        response['data']['createShop']['shop']['name']
+    ))
+
+
+def error(err):
+    print('Error: ', err)
+
+
 def main(
         service='https://www.inegi.org.mx/app/api/denue/v1/consulta',
         method='BuscarEntidad',
@@ -33,7 +43,7 @@ def main(
             )
 
     service = Service()
-    insert = service.insert_shops(GRAPHQL_API)
+    insert = service.insert_shops(GRAPHQL_API, success, error)
 
     asyncio.run(insert(shops))
 
