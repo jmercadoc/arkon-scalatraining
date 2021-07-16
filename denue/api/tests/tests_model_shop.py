@@ -3,13 +3,13 @@ from django.test import TestCase
 
 from api.models import Shop
 
-from api.functions_test import *
+from api.tests.functions import create_shop
 
 
 class ShopTestCase(TestCase):
 
     def setUp(self):
-        self.shop = create_shop()
+        self.shop = next(create_shop())
 
     def test_shop_get_by_name(self):
         shop = Shop.objects.get(name=self.shop.name)

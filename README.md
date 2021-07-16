@@ -36,15 +36,20 @@ query them based on their location.
 - [Code](https://code.visualstudio.com/)
 
 ## Libraries
-- [Django](https://docs.djangoproject.com): Library for FP.
+- [Django](https://docs.djangoproject.com).
 - [Geospatial libraries](https://docs.djangoproject.com/en/3.2/ref/contrib/gis/install/geolibs/)
 - [GeoDjango Model API](https://docs.djangoproject.com/en/3.2/ref/contrib/gis/model-api/)
+- [Graphene-Django](https://docs.graphene-python.org/projects/django/en/latest/)
+    - [GeoDjango](https://github.com/EverWinter23/graphene-gis)
+    - [Testing API](https://docs.graphene-python.org/projects/django/en/latest/testing/)
 - [Testing in Django](https://docs.djangoproject.com/en/3.2/topics/testing/): Python testing library.
 
 ## Exercises
 
 ## How to execute services and tests with docker-compose and docker
 ```
+ docker-compose build
+ 
  docker-compose up -d
 
  // docker-compose

@@ -38,7 +38,7 @@ SECRET_KEY = env('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = env('DJANGO_DEBUG')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['localhost', '*']
 
 
 # Application definition
@@ -50,6 +50,9 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     # Third party libraries
+    'django_filters',
+    'graphene_django',
+    'graphene_gis',
     'phonenumber_field',
     # Denue libraries
     'api'
@@ -145,3 +148,11 @@ STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+# Graphene primary key field
+GRAPHENE = {
+    'SCHEMA': 'denue.schema.schema',
+    'RELAY_CONNECTION_ENFORCE_FIRST_OR_LAST': False,
+    'RELAY_CONNECTION_MAX_LIMIT': 50,
+}
