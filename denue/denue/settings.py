@@ -152,5 +152,7 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # Graphene primary key field
 GRAPHENE = {
-    'SCHEMA': 'denue.schema.schema'
+    'SCHEMA': 'denue.schema.schema',
+    'RELAY_CONNECTION_ENFORCE_FIRST_OR_LAST': False,
+    'RELAY_CONNECTION_MAX_LIMIT': 50,
 }

@@ -12,7 +12,7 @@ class ShopTypeTestCase(GraphQLTestCase):
         self.shop_types = list(create_shop_type(items_len=3))
 
     def test_shop_type_query(self):
-        name = 'allShopType'
+        name = 'shopTypes'
         body = """
             edges{
                 node{

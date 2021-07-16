@@ -32,7 +32,9 @@ def create_shop(items_len=1):
         address = generate_string(20, 150)
         email = 'user1@test.com'
         website = 'www.test.com'
-        position = Point(5, 23)
+        latitude = generate_float(-90, 90)
+        longitude = generate_float(-180, 180)
+        position = Point(x=longitude, y=latitude)
 
         activity = next(create_comercial_activity())
         stratum = next(create_stratum())
@@ -64,6 +66,37 @@ def build_graphql_query(query_name, query_select):
     return query
 
 
+def build_graphql_query_with_parameters(name, select, parameters, variables):
+    query = """
+        query {name}({parameters}){{
+        {name}({variables}){{
+            {select}
+        }} 
+    }}
+    """.format(
+        name=name,
+        select=select,
+        parameters=parameters,
+        variables=variables)
+
+    return query
+
+
+def build_graphql_mutation(name, select, input):
+    query = """
+        mutation {name} {{
+        {name}({input}){{
+            {select}
+        }} 
+    }}
+    """.format(
+        name=name,
+        select=select,
+        input=input)
+
+    return query    
+
+
 def build_response_expected(items, name):
 
     def activity(ca):
@@ -79,5 +112,32 @@ def build_response_expected(items, name):
             'edges': list(comercial_activity)
             }
         }
+
+    return expected
+
+
+def build_shop_response_expected(item, name):
+
+    expected = {
+        name: {
+            'name': item.name            
+            }
+        }
+
+    return expected
+
+
+def build_mutation_response_expected(item, name):
+
+    expected = {
+        name: {
+            'shop': {
+                'name': item["name"],
+                'businessName': item["business_name"],
+                'activity': {'name': item["activity"].lower()},
+                'stratum': {'name': item["stratum"].lower()}
+            }
+        }
+    }
 
     return expected
