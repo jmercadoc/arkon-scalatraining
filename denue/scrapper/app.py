@@ -1,7 +1,20 @@
 import sys
+import asyncio
+
 from dotenv import dotenv_values
 
 from scrapper import Scrapper
+from service import Service
+
+
+def success(response):
+    print('shop {} inserted'.format(
+        response['data']['createShop']['shop']['name']
+    ))
+
+
+def error(err):
+    print('Error: ', err)
 
 
 def main(
@@ -10,27 +23,29 @@ def main(
         condition='todos',
         federal_entity='01',
         initial_registration=1,
-        final_registration=100
+        final_registration=10
         ):
 
     config = dotenv_values(".env")
     RENUE_API_KEY = config['RENUE_API_KEY']
+    GRAPHQL_API = config['GRAPHQL_API']
+    scrapper = Scrapper(
+        token=RENUE_API_KEY,
+        service=service
+        )
 
-    scrapper = Scrapper(token=RENUE_API_KEY)
-
-    url = scrapper.build_denue_query(
-            service=service,
+    shops = scrapper.get_data_denue(
             method=method,
             condition=condition,
             federal_entity=federal_entity,
             initial_registration=initial_registration,
-            final_registration=final_registration,
-            token=RENUE_API_KEY)
+            final_registration=final_registration
+            )
 
-    print(url)
+    service = Service()
+    insert = service.insert_shops(GRAPHQL_API, success, error)
 
-    # TODO Retrieve data from DENUE
-    # TODO Retrieve execute create shop
+    asyncio.run(insert(shops))
 
 
 if __name__ == "__main__":

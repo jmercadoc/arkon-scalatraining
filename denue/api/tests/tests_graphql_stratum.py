@@ -12,7 +12,7 @@ class StratumTestCase(GraphQLTestCase):
         self.stratums = list(create_stratum(items_len=3))
 
     def test_stratum_query(self):
-        name = 'allStratums'
+        name = 'stratums'
         body = """
             edges{
                 node{
@@ -23,6 +23,5 @@ class StratumTestCase(GraphQLTestCase):
         query = build_graphql_query(name, body)
 
         executed = self.client.execute(query)
-        expected = build_response_expected(self.stratums, name)
-
+        expected = build_response_expected(self.stratums, name)        
         self.assertEqual(executed['data'], expected)
