@@ -12,7 +12,7 @@ class ComercialActivityTestCase(GraphQLTestCase):
         self.comercial_activities = list(create_comercial_activity(items_len=3))
 
     def test_comercial_activity_query(self):
-        name = 'allComercialActivities'
+        name = 'comercialActivities'
         body = """
             edges{
                 node{
