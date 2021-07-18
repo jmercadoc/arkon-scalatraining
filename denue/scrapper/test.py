@@ -1,6 +1,7 @@
 import os
 import sys
 import unittest
+import asyncio
 
 from dotenv import dotenv_values
 
@@ -24,20 +25,26 @@ class TestScrapper(unittest.TestCase):
         config = dotenv_values(".env")
         RENUE_API_KEY = config['RENUE_API_KEY']
 
-        scrapper = Scrapper(token=RENUE_API_KEY)
+        scrapper = Scrapper(
+            token=RENUE_API_KEY,
+            service=service
+        )
 
         data = scrapper.get_data_denue(
-                service=service,
                 method=method,
                 condition=condition,
                 federal_entity=federal_entity,
                 initial_registration=initial_registration,
-                final_registration=final_registration,
-                token=RENUE_API_KEY)
+                final_registration=final_registration
+                )
 
         self.assertEqual(len(data), final_registration)
 
     def test_execution_mutaion(self):
+
+        async def async_func(GRAPHQL_API, shop, response):
+            response = await service.execute_mutation(GRAPHQL_API, shop)
+
         name = utilities.generate_string()
         shop = {
                 'CLEE': '01001621111005611000000000U0',
@@ -67,8 +74,12 @@ class TestScrapper(unittest.TestCase):
 
         service = Service()
 
-        response = service.execute_mutation(api=GRAPHQL_API, shop=shop)
-        self.assertEqual(response['data']['createShop']['shop']['name'], name)
+        loop = asyncio.get_event_loop()
+        coroutine = async_func(GRAPHQL_API, shop)        
+        loop.run_until_complete(coroutine)
+        # response = execute_mutation(shop)
+
+        # self.assertEqual(response['data']['createShop']['shop']['name'], name)
         service.session.close()
 
 
